@@ -9,7 +9,7 @@ def get_chrome_driver():
     """
     options = ChromeOptions()
     
-    # Chrome con GUI:
+    # Chrome sin GUI:
     # options.add_argument("--headless")
     
     # Estas opciones ayudan a evitar errores comunes en Linux

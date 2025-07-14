@@ -1,6 +1,11 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from fastapi import FastAPI, HTTPException
-import uvicorn
 from routes import scraping_routes
+import uvicorn
 
 app = FastAPI(
     title="API Scraping Toxic Social Media"

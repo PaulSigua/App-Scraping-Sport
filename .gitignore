@@ -261,3 +261,11 @@ $RECYCLE.BIN/
 
 .scraping-env/
 scraping-env
+
+# x
+tweets_clean.json
+tweets_raw.json
+
+# tiktok
+comentarios_tiktok_raw.json
+comentarios_tiktok_clean.json
