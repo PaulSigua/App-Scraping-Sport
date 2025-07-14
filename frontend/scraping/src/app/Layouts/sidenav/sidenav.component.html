@@ -1,0 +1,50 @@
+<!-- sidenav.component.html -->
+<div class="flex h-screen">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-200 shadow-sm p-4">
+    <div class="p-4 flex items-center space-x-2 border-b border-gray-100">
+      <!-- <img src="/assets/logo.svg" alt="Logo" class="w-6 h-6"> -->
+      <span class="text-lg font-semibold text-gray-800">Toxic Sport</span>
+    </div>
+
+    <nav class="mt-6">
+      <ul class="space-y-2">
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="bg-green-200 text-green-800"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="flex items-center px-4 py-2 text-sm font-medium rounded-lg hover:bg-green-200"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6"></path>
+            </svg>
+            Panel General
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="/monitoreo"
+            routerLinkActive="bg-green-200 text-green-800"
+            class="flex items-center px-4 py-2 text-sm font-medium rounded-lg hover:bg-gray-100"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9.75 3v1.5m4.5-1.5v1.5M4.5 7.5h15M6 19.5h12M3 12h18"></path>
+            </svg>
+            Monitoreo
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Footer -->
+    <div class="absolute bottom-4 w-full px-4">
+      <div class="text-sm text-green-800">Admin<br><span class="text-xs">Moderador Principal</span></div>
+    </div>
+  </aside>
+
+  <!-- Main content placeholder -->
+  <div class="flex-1 bg-gray-50 p-4">
+    <router-outlet></router-outlet>
+  </div>
+</div>
