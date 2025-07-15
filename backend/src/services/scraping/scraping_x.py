@@ -14,6 +14,7 @@ load_dotenv()
 EMAIL = os.getenv("TWITTER_EMAIL")
 PASSWORD = os.getenv("TWITTER_PASSWORD")
 USERNAME = os.getenv("TWITTER_USERNAME")
+PATH_ = os.getenv("Data_win")
 
 
 class ScraperX:
@@ -165,8 +166,6 @@ class ScraperX:
             return {
                 "tweet_url": tweet_url,
                 "username": username,
-                "tweet_text": tweet_text,
-                "fecha": fecha,
                 "comments": comentarios
             }
 
@@ -175,8 +174,8 @@ class ScraperX:
             return None
 
     def guardar_json(self, 
-                     json_raw_path="src/data/tweets_raw.json", 
-                     json_clean_path="src/data/tweets_clean.json"):
+                     json_raw_path=f"{PATH_}/tweets_raw.json", 
+                     json_clean_path=f"{PATH_}/tweets_clean.json"):
         with open(json_raw_path, "w", encoding="utf-8") as f:
             json.dump(self.tweets_data, f, ensure_ascii=False, indent=2)
         print(f"✅ Datos crudos guardados en: {json_raw_path}")
@@ -196,7 +195,7 @@ class ScraperX:
                 )
                 if len(limpio.split()) >= 3:
                     clean_data.append({
-                        "tweet_id": tweet["tweet_text"],
+                        "tweet_id": tweet["tweet_url"],
                         "comment_user": comment["usuario"],
                         "comment_text": limpio
                     })
