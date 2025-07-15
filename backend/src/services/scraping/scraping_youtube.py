@@ -5,6 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from services.driver import get_chrome_driver
 from services.clean_text import LimpiezaComentarios
+import os
+
+PATH_ = os.getenv("Data_win")
 
 class ScraperYouTube:
     def __init__(self, max_videos=None, palabra_clave=None, scrolls=10):
@@ -41,17 +44,7 @@ class ScraperYouTube:
         print(f"🎥 Extrayendo de: {video_url}")
         self.driver.get(video_url)
         time.sleep(4)
-
-        # Obtener título del video
-        try:
-            title_elem = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.title yt-formatted-string'))
-            )
-            video_title = title_elem.text.strip()
-        except:
-            print("No se pudo obtener el título del video.")
-            video_title = "Desconocido"
-
+        
         # Scroll para cargar comentarios
         for i in range(self.scrolls):
             self.driver.execute_script("window.scrollBy(0, 700);")
@@ -72,14 +65,14 @@ class ScraperYouTube:
                 user = thread.find_element(By.ID, "author-text").text.strip()
                 if re.search(r"\b\w+\b", text):
                     self.comentarios_data.append({
-                        "video_title": video_title,
+                        "video_url": video_url,  
                         "usuario": user,
                         "comentario": text
                     })
             except:
                 continue
 
-    def guardar_json(self, json_raw_path="src/data/youtube_raw.json", json_clean_path="src/data/youtube_clean.json"):
+    def guardar_json(self, json_raw_path=f"{PATH_}/youtube_raw.json", json_clean_path=f"{PATH_}/youtube_clean.json"):
         with open(json_raw_path, "w", encoding="utf-8") as f:
             json.dump(self.comentarios_data, f, ensure_ascii=False, indent=2)
         print(f"Comentarios crudos guardados en: {json_raw_path}")
@@ -98,6 +91,7 @@ class ScraperYouTube:
             )
             if len(limpio.split()) >= 3:
                 clean_data.append({
+                    "video_url": item["video_url"], 
                     "usuario": item["usuario"],
                     "comentario": limpio
                 })
