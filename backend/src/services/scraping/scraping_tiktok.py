@@ -5,8 +5,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from services.driver import get_chrome_driver
 from services.clean_text import LimpiezaComentarios
+import os
 
 class ScraperTikTok:
+    PATH_ = os.getenv("Data_win")
+
     def __init__(self, palabra_clave=None, max_videos=None):
         self.palabra_clave = palabra_clave
         self.max_videos = max_videos
@@ -56,16 +59,16 @@ class ScraperTikTok:
             self.driver.get(url)
             time.sleep(3)
 
-            # Intentar pausar el video
-            try:
-                pausa_btn = WebDriverWait(self.driver, 10).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.css-q1bwae-DivPlayIconContainer'))
-                )
-                pausa_btn.click()
-                print("⏸ Video pausado")
-                time.sleep(1)
-            except Exception as e:
-                print(f"⚠️ No se pudo pausar el video: {e}")
+            # # Intentar pausar el video
+            # try:
+            #     pausa_btn = WebDriverWait(self.driver, 10).until(
+            #         EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.css-q1bwae-DivPlayIconContainer'))
+            #     )
+            #     pausa_btn.click()
+            #     print("⏸ Video pausado")
+            #     time.sleep(1)
+            # except Exception as e:
+            #     print(f"⚠️ No se pudo pausar el video: {e}")
 
             last_count = 0
             same_count_retries = 0
@@ -124,8 +127,8 @@ class ScraperTikTok:
                     continue
 
     def guardar_json(self, 
-                     json_raw_path="src/data/comentarios_tiktok_raw.json", 
-                     json_clean_path="src/data/comentarios_tiktok_clean.json"):
+                     json_raw_path=f"{PATH_}/comentarios_tiktok_raw.json", 
+                     json_clean_path=f"{PATH_}/comentarios_tiktok_clean.json"):
         # Guardar comentarios originales
         with open(json_raw_path, "w", encoding="utf-8") as f:
             json.dump(self.comentarios_data, f, ensure_ascii=False, indent=2)

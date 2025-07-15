@@ -8,6 +8,8 @@ import json
 import os
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+PATH_ = os.getenv("Data_win")
+
 router = APIRouter(
     prefix="/scraping",
     tags=["scraping"]
@@ -20,6 +22,10 @@ class ScrapingXRequest(BaseModel):
 class ScrapingTikTokRequest(BaseModel):
     palabra_clave: str
     max_videos: int
+
+class ScrapingYouTubeRequest(BaseModel):
+    max_videos: int
+    palabra_clave: str  
 
 
 @router.post("/x")
@@ -50,19 +56,23 @@ def scraping_tiktok(data: ScrapingTikTokRequest):
     }
 
 @router.post("/youtube")
-def scraping_youtube(max_videos: int, palabra_clave: str):
-    scraper = ScraperYouTube(palabra_clave=palabra_clave, max_videos=max_videos)
-    scraper.buscar_videos()
-    resultado = scraper.guardar_json()
+def scraping_youtube(data: ScrapingYouTubeRequest):
+    try:
+        scraper = ScraperYouTube(palabra_clave=data.palabra_clave, max_videos=data.max_videos)
+        scraper.buscar_videos()
+        resultado = scraper.guardar_json()
 
-    return {
-        "status": "ok",
-        "videos_procesados": max_videos,
-        "comentarios_totales": resultado["total_raw"],
-        "comentarios_limpios": resultado["total_limpio"],
-        "archivo_raw": resultado["archivo_raw"],
-        "archivo_limpio": resultado["archivo_limpio"]
-    }
+        return {
+            "status": "ok",
+            "comentarios_totales": resultado["total_raw"],
+            "comentarios_limpios": resultado["total_limpio"],
+            "archivo_raw": resultado["archivo_raw"],
+            "archivo_limpio": resultado["archivo_limpio"]
+        }
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
 
 # Falta Facebook
 
@@ -81,39 +91,68 @@ def leer_json(path: str):
 
 @router.get("/comentarios/x")
 def get_comentarios_x():
-    data = leer_json(f"{DATA_DIR}/tweets_raw.json")
+    data = leer_json(f"{PATH_}/tweets_raw.json")
+    clean_data = leer_json(f"{PATH_}/tweets_clean.json")
+
+    # Crear set de claves válidas desde clean: (usuario, tweet_text)
+    clean_keys = set((tweet["comment_user"], tweet["tweet_id"]) for tweet in clean_data)
+
     comentarios = []
     for tweet in data:
+        tweet_text = tweet["tweet_url"]
         for c in tweet.get("comments", []):
-            comentarios.append({
-                "usuario": c["usuario"],
-                "comentario": c["texto"],
-                "plataforma": "x"
-            })
+            clave = (c["usuario"], tweet_text)
+            if clave in clean_keys:
+                comentarios.append({
+                    "usuario": c["usuario"],
+                    "comentario": c["texto"],
+                    "plataforma": "x"
+                })
+
     return JSONResponse(content=comentarios)
+
 
 
 @router.get("/comentarios/tiktok")
 def get_comentarios_tiktok():
-    data = leer_json(f"{DATA_DIR}/comentarios_tiktok_raw.json")
-    comentarios = []
-    for c in data:
-        comentarios.append({
-            "usuario": c["usuario"],
-            "comentario": c["comentario"],
-            "plataforma": "tiktok"
-        })
-    return JSONResponse(content=comentarios)
+    # Leer ambos archivos JSON
+    raw_data = leer_json(f"{PATH_}/comentarios_tiktok_raw.json")
+    clean_data = leer_json(f"{PATH_}/comentarios_tiktok_clean.json")
+
+    clean_keys = set((comentario["usuario"], comentario["video_url"]) for comentario in clean_data)
+
+    comentarios_validados = []
+    for comentario in raw_data:
+        clave = (comentario["usuario"], comentario["video_url"])
+        if clave in clean_keys:
+            comentarios_validados.append({
+                "usuario": comentario["usuario"],
+                "comentario": comentario["comentario"],
+                "plataforma": "tiktok"
+            })
+
+    return JSONResponse(content=comentarios_validados)
+
 
 
 @router.get("/comentarios/youtube")
 def get_comentarios_youtube():
-    data = leer_json(f"{DATA_DIR}/youtube_raw.json")
+    data = leer_json(f"{PATH_}/youtube_raw.json")
+    clean_data = leer_json(f"{PATH_}/youtube_clean.json")
+
+    # Crear set de claves válidas desde clean: (video_url, usuario)
+    clean_keys = set((c["video_url"], c["usuario"]) for c in clean_data)
+
     comentarios = []
     for c in data:
-        comentarios.append({
-            "usuario": c["usuario"],
-            "comentario": c["comentario"],
-            "plataforma": "youtube"
-        })
+        clave = (c["video_url"], c["usuario"])  # ahora sí coinciden
+        if clave in clean_keys:
+            comentarios.append({
+                "usuario": c["usuario"],
+                "comentario": c["comentario"],  # Comentario original del raw
+                "plataforma": "youtube"
+            })
+
     return JSONResponse(content=comentarios)
+
+
