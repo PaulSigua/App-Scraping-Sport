@@ -269,3 +269,7 @@ tweets_raw.json
 # tiktok
 comentarios_tiktok_raw.json
 comentarios_tiktok_clean.json
+
+# Youtube
+youtube_clean.json
+youtube_raw.json

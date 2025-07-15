@@ -7,7 +7,7 @@ from services.driver import get_chrome_driver
 from services.clean_text import LimpiezaComentarios
 
 class ScraperTikTok:
-    def __init__(self, palabra_clave="mundial de clubes 2025", max_videos=10):
+    def __init__(self, palabra_clave=None, max_videos=None):
         self.palabra_clave = palabra_clave
         self.max_videos = max_videos
         self.comentarios_data = []
@@ -56,26 +56,29 @@ class ScraperTikTok:
             self.driver.get(url)
             time.sleep(3)
 
+            # Intentar pausar el video
             try:
                 pausa_btn = WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.css-q1bwae-DivPlayIconContainer'))
                 )
                 pausa_btn.click()
+                print("⏸ Video pausado")
                 time.sleep(1)
-            except:
-                pass
+            except Exception as e:
+                print(f"⚠️ No se pudo pausar el video: {e}")
 
             last_count = 0
             same_count_retries = 0
+            max_retries = 2
             max_scrolls = 10
             scrolls = 0
 
-            while same_count_retries < 2 and scrolls < max_scrolls:
+            while same_count_retries < max_retries and scrolls < max_scrolls:
                 self.driver.execute_script("window.scrollBy(0, 700)")
                 time.sleep(4)
 
                 if "/video/" not in self.driver.current_url:
-                    print("Saliste del video, recargando...")
+                    print("🔁 Saliste del video, recargando...")
                     self.driver.get(url)
                     time.sleep(10)
                     last_count = 0
@@ -84,6 +87,7 @@ class ScraperTikTok:
 
                 items = self.driver.find_elements(By.CSS_SELECTOR, 'div[class*="DivCommentContentWrapper"]')
                 current_count = len(items)
+                print(f"💬 Comentarios visibles: {current_count}")
 
                 if current_count == last_count:
                     same_count_retries += 1
@@ -93,7 +97,17 @@ class ScraperTikTok:
 
                 scrolls += 1
 
-            items = self.driver.find_elements(By.CSS_SELECTOR, 'div[class*="DivCommentContentWrapper"]')
+            print(f"✅ Scroll finalizado. Total detectados: {last_count}")
+
+            try:
+                WebDriverWait(self.driver, 12).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, 'div[class*="DivCommentContentWrapper"]'))
+                )
+                items = self.driver.find_elements(By.CSS_SELECTOR, 'div[class*="DivCommentContentWrapper"]')
+            except:
+                print("⚠️ No se encontraron comentarios después del scroll.")
+                continue
+
             for item in items:
                 try:
                     usuario_elem = item.find_element(By.CSS_SELECTOR, 'a[href*="/@"]')
@@ -109,7 +123,9 @@ class ScraperTikTok:
                 except:
                     continue
 
-    def guardar_json(self, json_raw_path="comentarios_tiktok_raw.json", json_clean_path="comentarios_tiktok_clean.json"):
+    def guardar_json(self, 
+                     json_raw_path="src/data/comentarios_tiktok_raw.json", 
+                     json_clean_path="src/data/comentarios_tiktok_clean.json"):
         # Guardar comentarios originales
         with open(json_raw_path, "w", encoding="utf-8") as f:
             json.dump(self.comentarios_data, f, ensure_ascii=False, indent=2)

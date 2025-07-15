@@ -2,27 +2,20 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 def get_chrome_driver():
     """
     Inicializa y retorna una nueva instancia de ChromeDriver con una sesión limpia.
     """
-    options = ChromeOptions()
-    
-    # Chrome sin GUI:
-    # options.add_argument("--headless")
-    
-    # Estas opciones ayudan a evitar errores comunes en Linux
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    
-    # Abrir siempre una nueva ventana de perfil temporal
-    options.add_argument("--incognito")
+    options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
-
-    # Evita que Selenium sea detectado (opcional)
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option("useAutomationExtension", False)
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--disable-logging")
+    options.add_argument("--disable-webrtc")
+    options.add_argument("--log-level=3")
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    service = Service()
 
     service = ChromeService(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
