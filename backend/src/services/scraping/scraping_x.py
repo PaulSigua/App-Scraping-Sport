@@ -17,7 +17,7 @@ USERNAME = os.getenv("TWITTER_USERNAME")
 
 
 class ScraperX:
-    def __init__(self, palabra_clave=None, max_posts=None, scrolls=10):
+    def __init__(self, palabra_clave=None, max_posts=None, scrolls=5):
         self.palabra_clave = palabra_clave
         self.max_posts = max_posts
         self.scrolls = scrolls
@@ -29,41 +29,52 @@ class ScraperX:
         time.sleep(3)
 
         try:
-            # Esperar el input inicial (correo o contraseña directamente)
-            WebDriverWait(self.driver, 10).until(
+            # Paso 1: ingresar email
+            correo_input = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.NAME, "text"))
             )
-            input_elem = self.driver.find_element(By.NAME, "text")
-            input_elem.send_keys(EMAIL)
-            input_elem.send_keys(Keys.RETURN)
-            print("Correo ingresado")
+            correo_input.send_keys(EMAIL, Keys.RETURN)
+            time.sleep(2)
+
+            # # Paso 2: bucle para manejar redirección a input de usuario (que también usa name="text")
+            # for _ in range(8):
+            #     try:
+            #         print("Verificando si hay que ingresar nombre de usuario...")
+            #         username_input = WebDriverWait(self.driver, 3).until(
+            #             EC.presence_of_element_located((By.NAME, "text"))
+            #         )
+            #         if username_input.is_displayed():
+            #             username_input.clear()
+            #             username_input.send_keys(USERNAME, Keys.RETURN)
+            #             print("Nombre de usuario ingresado")
+            #             time.sleep(2)
+            #             break
+            #     except:
+            #         print("Esperando el campo de username...")
+            #         time.sleep(1)
+
+            # Paso 3: ahora sí esperar el campo de contraseña
+            time.sleep(3)   
+            print("Verificando si hay que ingresar nombre de usuario...")
+            username_input = WebDriverWait(self.driver, 3).until(
+                EC.presence_of_element_located((By.NAME, "text"))
+            )
+            username_input.send_keys(USERNAME, Keys.RETURN)
             time.sleep(3)
-
-            # Verificamos si aparece otra vez el input "text" para el USERNAME
-            try:
-                input_username = WebDriverWait(self.driver, 4).until(
-                    EC.presence_of_element_located((By.NAME, "text"))
-                )
-                input_username.send_keys(USERNAME)
-                input_username.send_keys(Keys.RETURN)
-                print("Usuario ingresado")
-                time.sleep(3)
-            except:
-                print("Usuario no requerido, avanzando...")
-
-            # Ahora sí el input de contraseña
-            password_input = WebDriverWait(self.driver, 10).until(
+            print("Esperando campo de contraseña...")
+            password_input = WebDriverWait(self.driver, 15).until(
                 EC.presence_of_element_located((By.NAME, "password"))
             )
-            password_input.send_keys(PASSWORD)
-            password_input.send_keys(Keys.RETURN)
+            password_input.send_keys(PASSWORD, Keys.RETURN)
             print("Contraseña ingresada")
 
             time.sleep(5)
             print("Sesión iniciada correctamente")
 
         except Exception as e:
-            print(f"Error durante el login: {e}")
+            print(f"Error al iniciar sesión en Twitter: {e}")
+            self.driver.save_screenshot("error_login_x.png")
+            raise
 
     def buscar_tweets(self):
         WebDriverWait(self.driver, 15).until(

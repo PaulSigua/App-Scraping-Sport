@@ -19,7 +19,8 @@ export class ScrapingService {
     return this.http.post<any>(url, payload);
   }
 
-  obtenerComentarios(archivo: string) {
-    return this.http.get<any[]>(`${this.apiUrl}/static/${archivo}`);
+  obtenerComentariosDesdeApi(plataforma: string) {
+    return this.http.get<any[]>(`${this.apiUrl}/scraping/comentarios/${plataforma}`);
   }
+
 }

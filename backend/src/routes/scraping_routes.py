@@ -3,6 +3,7 @@ from services.scraping.scraping_x import ScraperX
 from services.scraping.scraping_tiktok import ScraperTikTok
 from services.scraping.scraping_youtube import ScraperYouTube
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import json
 import os
 
@@ -12,9 +13,18 @@ router = APIRouter(
     tags=["scraping"]
 )
 
+class ScrapingXRequest(BaseModel):
+    palabra_clave: str
+    max_posts: int
+    
+class ScrapingTikTokRequest(BaseModel):
+    palabra_clave: str
+    max_videos: int
+
+
 @router.post("/x")
-def scraping_x(max_posts: int = 3, palabra_clave: str = "mundial de clubes"):
-    scraper = ScraperX(palabra_clave=palabra_clave, max_posts=max_posts)
+def scraping_x(data: ScrapingXRequest):
+    scraper = ScraperX(palabra_clave=data.palabra_clave, max_posts=data.max_posts)
     scraper.open_twitter_login()
     scraper.buscar_tweets()
     resultado = scraper.guardar_json()
@@ -28,8 +38,8 @@ def scraping_x(max_posts: int = 3, palabra_clave: str = "mundial de clubes"):
     }
 
 @router.post("/tiktok")
-def scraping_tiktok(max_videos: int = 5, palabra_clave: str = "mundial de clubes"):
-    scraper = ScraperTikTok(palabra_clave=palabra_clave, max_videos=max_videos)
+def scraping_tiktok(data: ScrapingTikTokRequest):
+    scraper = ScraperTikTok(palabra_clave=data.palabra_clave, max_videos=data.max_videos)
     scraper.buscar_videos()
     scraper.extraer_comentarios()
     json_path = scraper.guardar_json()
@@ -40,7 +50,7 @@ def scraping_tiktok(max_videos: int = 5, palabra_clave: str = "mundial de clubes
     }
 
 @router.post("/youtube")
-def scraping_youtube(max_videos: int = 5, palabra_clave: str = "mundial de clubes"):
+def scraping_youtube(max_videos: int, palabra_clave: str):
     scraper = ScraperYouTube(palabra_clave=palabra_clave, max_videos=max_videos)
     scraper.buscar_videos()
     resultado = scraper.guardar_json()

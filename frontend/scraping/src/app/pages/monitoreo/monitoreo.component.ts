@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ScrapingService } from '../../services/scraping/scraping.service';
 
 interface Comentario {
@@ -19,34 +19,73 @@ interface Comentario {
   templateUrl: './monitoreo.component.html',
   styleUrl: './monitoreo.component.css',
 })
-export class MonitoreoComponent {
-  palabraClave = 'mundial de clubes';
+export class MonitoreoComponent implements OnInit {
+  palabraClave = '';
   maxResultados = 3;
-  comentarios: any[] = [];
+  comentarios: Comentario[] = [];
+  comentariosFiltrados: Comentario[] = [];
+
+  plataformaSeleccionada = '';
+  filtroPlataforma = 'todas';
+
   cargando = false;
 
   constructor(private scrapingSer: ScrapingService) {}
 
-  ejecutarScraping(plataforma: string) {
+  ngOnInit(): void {
+    this.cargarComentariosPrevios();
+  }
+
+  cargarComentariosPrevios() {
+    this.cargando = true;
+    const plataformas = ['x', 'youtube', 'tiktok'];
+    let pendientes = plataformas.length;
+
+    plataformas.forEach((plataforma) => {
+      this.scrapingSer.obtenerComentariosDesdeApi(plataforma).subscribe({
+        next: (comentarios) => {
+          const formateados = comentarios.map((c: any) => ({
+            ...c,
+            plataforma,
+            confianza: Math.floor(Math.random() * 20) + 80,
+            riesgo: Math.floor(Math.random() * 100),
+            etiquetas: ['Fútbol'],
+            fecha: new Date().toLocaleString(),
+          }));
+          this.comentarios.push(...formateados);
+          this.actualizarComentariosFiltrados();
+          pendientes--;
+          if (pendientes === 0) this.cargando = false;
+        },
+        error: () => {
+          pendientes--;
+          if (pendientes === 0) this.cargando = false;
+        },
+      });
+    });
+  }
+
+  ejecutarScraping() {
+    if (!this.plataformaSeleccionada) return;
     this.cargando = true;
 
     this.scrapingSer
-      .ejecutarScraping(plataforma, this.palabraClave, this.maxResultados)
+      .ejecutarScraping(this.plataformaSeleccionada, this.palabraClave, this.maxResultados)
       .subscribe({
-        next: (res) => {
-          const archivo = res.archivo_limpio || res.archivo_json;
+        next: () => {
           this.scrapingSer
-            .obtenerComentarios(archivo)
+            .obtenerComentariosDesdeApi(this.plataformaSeleccionada)
             .subscribe((comentarios) => {
               const formateados = comentarios.map((c: any) => ({
                 ...c,
-                plataforma,
+                plataforma: this.plataformaSeleccionada,
                 confianza: Math.floor(Math.random() * 20) + 80,
                 riesgo: Math.floor(Math.random() * 100),
                 etiquetas: ['Fútbol'],
                 fecha: new Date().toLocaleString(),
               }));
               this.comentarios.push(...formateados);
+              this.actualizarComentariosFiltrados();
               this.cargando = false;
             });
         },
@@ -56,9 +95,21 @@ export class MonitoreoComponent {
         },
       });
   }
-  onPlatformChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const plataforma = selectElement.value;
-    this.ejecutarScraping(plataforma);
+
+  actualizarComentariosFiltrados() {
+    this.comentariosFiltrados = this.filtroPlataforma === 'todas'
+      ? [...this.comentarios]
+      : this.comentarios.filter(c => c.plataforma === this.filtroPlataforma);
+  }
+
+  onChangeFiltroPlataforma(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.filtroPlataforma = select.value;
+    this.actualizarComentariosFiltrados();
+  }
+
+  onSeleccionPlataforma(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.plataformaSeleccionada = select.value;
   }
 }
