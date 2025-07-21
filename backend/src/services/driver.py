@@ -9,7 +9,7 @@ def get_chrome_driver():
     Inicializa y retorna una nueva instancia de ChromeDriver con una sesión limpia.
     """
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
+    #options.add_argument("--headless=new")
     options.add_argument("--start-maximized")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("--disable-logging")

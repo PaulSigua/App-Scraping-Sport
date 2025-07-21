@@ -6,3 +6,4 @@ langdetect
 nltk
 webdriver_manager
 spacy
+openai

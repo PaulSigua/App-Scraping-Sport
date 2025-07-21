@@ -11,6 +11,7 @@ interface Comentario {
   riesgo?: number;
   etiquetas?: string[];
   fecha?: string;
+  clasificacion?: string;
 }
 
 @Component({
