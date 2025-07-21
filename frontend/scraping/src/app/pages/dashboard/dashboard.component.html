@@ -12,22 +12,24 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     <div class="bg-white rounded-lg p-4 shadow border border-blue-100">
       <p class="text-sm text-gray-500">Comentarios Hoy</p>
-      <h2 class="text-xl font-bold text-blue-700">12,847</h2>
+      <h2 class="text-xl font-bold text-blue-700">{{ totalComentarios }}</h2>
       <p class="text-green-500 text-xs mt-1">+12.5% respecto ayer</p>
     </div>
     <div class="bg-white rounded-lg p-4 shadow border border-red-100">
       <p class="text-sm text-gray-500">Contenido Tóxico</p>
-      <h2 class="text-xl font-bold text-red-600">247</h2>
-      <p class="text-red-500 text-xs mt-1">1.9% del total</p>
+      <h2 class="text-xl font-bold text-red-600">{{ totalToxicos }}</h2>
+      <p class="text-red-500 text-xs mt-1">
+        {{ (totalToxicos / totalComentarios * 100) | number:'1.1-1' }}% del total
+      </p>
     </div>
     <div class="bg-white rounded-lg p-4 shadow border border-yellow-100">
       <p class="text-sm text-gray-500">Alertas Críticas</p>
-      <h2 class="text-xl font-bold text-yellow-600">23</h2>
+      <h2 class="text-xl font-bold text-yellow-600">{{ alertasCriticas }}</h2>
       <p class="text-orange-500 text-xs mt-1">⚠ Acción requerida</p>
     </div>
     <div class="bg-white rounded-lg p-4 shadow border border-green-100">
       <p class="text-sm text-gray-500">Precisión IA</p>
-      <h2 class="text-xl font-bold text-green-700">94.2%</h2>
+      <h2 class="text-xl font-bold text-green-700">{{ precisionIA }}%</h2>
       <p class="text-green-600 text-xs mt-1">Excelente</p>
     </div>
   </div>
@@ -41,19 +43,27 @@
       <p class="text-sm text-gray-700 font-semibold mb-2">Plataformas Activas</p>
       <ul class="space-y-2 text-sm text-gray-600">
         <li class="flex justify-between items-center">
-          <span class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span>Twitter</span>
-          <span>8.2K</span>
+          <span class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>Twitter
+          </span>
+          <span>{{ conteoPorPlataforma['x'] }}</span>
         </li>
         <li class="flex justify-between items-center">
-          <span class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-pink-400"></span>Youtube       </span>
-          <span>3.1K</span>
+          <span class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-pink-400"></span>YouTube
+          </span>
+          <span>{{ conteoPorPlataforma['youtube'] }}</span>
         </li>
         <li class="flex justify-between items-center">
-          <span class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-blue-300"></span>Facebook</span>
-          <span>1.4K</span>
+          <span class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-blue-300"></span>TikTok
+          </span>
+          <span>{{ conteoPorPlataforma['tiktok'] }}</span>
         </li>
         <li class="flex justify-between items-center text-gray-400">
-          <span class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-gray-300"></span>TikTok</span>
+          <span class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-gray-300"></span>Facebook
+          </span>
           <span>Pausado</span>
         </li>
       </ul>
@@ -67,17 +77,14 @@
       <a href="#" class="text-blue-500 text-sm">Ver todas</a>
     </div>
     <ul class="divide-y divide-gray-200">
-      <li class="py-2">
-        <p class="text-sm text-gray-700"><span class="font-semibold text-orange-600">[Amenaza]</span> “Este árbitro es un completo incompetente...”</p>
-        <p class="text-xs text-gray-500">Por: fan_futbol - Twitter • Confianza: 94%</p>
-      </li>
-      <li class="py-2">
-        <p class="text-sm text-gray-700"><span class="font-semibold text-red-600">[Racismo]</span> “No deberían estar aquí por su origen...”</p>
-        <p class="text-xs text-gray-500">Por: opinion_deportes - TikTok • Confianza: 98%</p>
-      </li>
-      <li class="py-2">
-        <p class="text-sm text-gray-700"><span class="font-semibold text-yellow-600">[Acoso]</span> “No sirves para nada...”</p>
-        <p class="text-xs text-gray-500">Por: anonimo - Facebook • Confianza: 91%</p>
+      <li class="py-2" *ngFor="let alerta of alertasRecientes">
+        <p class="text-sm text-gray-700">
+          <span class="font-semibold text-orange-600">[{{ alerta.clasificacion | titlecase }}]</span>
+          “{{ alerta.comentario }}”
+        </p>
+        <p class="text-xs text-gray-500">
+          Por: {{ alerta.usuario }} - {{ alerta.plataforma | titlecase }} • Confianza: {{ alerta.confianza || 0 }}%
+        </p>
       </li>
     </ul>
   </div>

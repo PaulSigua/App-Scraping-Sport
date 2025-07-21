@@ -196,8 +196,9 @@ class ScraperX:
                 if len(limpio.split()) >= 3:
                     clean_data.append({
                         "tweet_id": tweet["tweet_url"],
-                        "comment_user": comment["usuario"],
-                        "comment_text": limpio
+                        "usuario": comment["usuario"],
+                        "comentario": limpio
+
                     })
 
         with open(json_clean_path, "w", encoding="utf-8") as f:

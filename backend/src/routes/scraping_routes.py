@@ -4,8 +4,10 @@ from services.scraping.scraping_tiktok import ScraperTikTok
 from services.scraping.scraping_youtube import ScraperYouTube
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from services.clasification.clasification_comments import clasificar_archivo
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 PATH_ = os.getenv("Data_win")
@@ -26,6 +28,12 @@ class ScrapingTikTokRequest(BaseModel):
 class ScrapingYouTubeRequest(BaseModel):
     max_videos: int
     palabra_clave: str  
+
+class ScrapingTodoRequest(BaseModel):
+    palabra_clave: str
+    max_posts_x: int
+    max_videos_tiktok: int
+    max_videos_youtube: int
 
 
 @router.post("/x")
@@ -74,6 +82,69 @@ def scraping_youtube(data: ScrapingYouTubeRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
 
+@router.post("/todo")
+def scraping_todo(data: ScrapingTodoRequest):
+    resultados = {}
+
+    def ejecutar_x():
+        try:
+            scraper = ScraperX(palabra_clave=data.palabra_clave, max_posts=data.max_posts_x)
+            scraper.open_twitter_login()
+            scraper.buscar_tweets()
+            res = scraper.guardar_json()
+            return ("x", {
+                "status": "ok",
+                "tweets_procesados": res["total_raw"],
+                "tweets_filtrados": res["total_limpio"],
+                "archivo_raw": res["archivo_raw"],
+                "archivo_limpio": res["archivo_limpio"]
+            })
+        except Exception as e:
+            return ("x", {"status": "error", "error": str(e)})
+
+    def ejecutar_tiktok():
+        try:
+            scraper = ScraperTikTok(palabra_clave=data.palabra_clave, max_videos=data.max_videos_tiktok)
+            scraper.buscar_videos()
+            scraper.extraer_comentarios()
+            path = scraper.guardar_json()
+            return ("tiktok", {
+                "status": "ok",
+                "total_comentarios": len(scraper.comentarios_data),
+                "archivo_json": path
+            })
+        except Exception as e:
+            return ("tiktok", {"status": "error", "error": str(e)})
+
+    def ejecutar_youtube():
+        try:
+            scraper = ScraperYouTube(palabra_clave=data.palabra_clave, max_videos=data.max_videos_youtube)
+            scraper.buscar_videos()
+            res = scraper.guardar_json()
+            return ("youtube", {
+                "status": "ok",
+                "comentarios_totales": res["total_raw"],
+                "comentarios_limpios": res["total_limpio"],
+                "archivo_raw": res["archivo_raw"],
+                "archivo_limpio": res["archivo_limpio"]
+            })
+        except Exception as e:
+            return ("youtube", {"status": "error", "error": str(e)})
+
+    # Ejecutamos los 3 scrapers en paralelo
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        tareas = [
+            executor.submit(ejecutar_x),
+            executor.submit(ejecutar_tiktok),
+            executor.submit(ejecutar_youtube)
+        ]
+
+        for future in tareas:
+            plataforma, resultado = future.result()
+            resultados[plataforma] = resultado
+
+    return JSONResponse(content=resultados)
+
 # Falta Facebook
 
 ##
@@ -93,20 +164,28 @@ def leer_json(path: str):
 def get_comentarios_x():
     data = leer_json(f"{PATH_}/tweets_raw.json")
     clean_data = leer_json(f"{PATH_}/tweets_clean.json")
+    data_clasificados = leer_json(f"{PATH_}/tweets_class.json")
 
-    # Crear set de claves válidas desde clean: (usuario, tweet_text)
-    clean_keys = set((tweet["comment_user"], tweet["tweet_id"]) for tweet in clean_data)
+    # Crear set de claves válidas desde clean: (usuario, tweet_id)
+    clean_keys = set((tweet["usuario"], tweet["tweet_id"]) for tweet in clean_data)
+
+    # Clasificados dict: (usuario, video_url) → "insulto", "otro", etc.
+    clasificados_dict = {
+        (c["usuario"], c["video_url"]): c["clasificacion"]
+        for c in data_clasificados
+    }
 
     comentarios = []
     for tweet in data:
-        tweet_text = tweet["tweet_url"]
+        tweet_url = tweet["tweet_url"]
         for c in tweet.get("comments", []):
-            clave = (c["usuario"], tweet_text)
+            clave = (c["usuario"], tweet_url)
             if clave in clean_keys:
                 comentarios.append({
                     "usuario": c["usuario"],
                     "comentario": c["texto"],
-                    "plataforma": "x"
+                    "plataforma": "x",
+                    "clasificacion": clasificados_dict.get(clave, "sin clasificar")
                 })
 
     return JSONResponse(content=comentarios)
@@ -155,4 +234,38 @@ def get_comentarios_youtube():
 
     return JSONResponse(content=comentarios)
 
+# Clasificacion de comentariosfrom fastapi import APIRouter
+@router.get("/clasificar/todo")
+def clasificar_todo():
+    resultados = []
 
+    plataformas = [
+        {
+            "nombre": "tiktok",
+            "path_clean": os.path.join(PATH_, "comentarios_tiktok_clean.json"),
+            "output_path": os.path.join(PATH_, "comentarios_tiktok_class.json")
+        },
+        {
+            "nombre": "x",
+            "path_clean": os.path.join(PATH_, "tweets_clean.json"),
+            "output_path": os.path.join(PATH_, "tweets_class.json")
+        },
+        {
+            "nombre": "youtube",
+            "path_clean": os.path.join(PATH_, "youtube_clean.json"),
+            "output_path": os.path.join(PATH_, "youtube_class.json")
+        }
+    ]
+
+    for plataforma in plataformas:
+        clasificados = clasificar_archivo(
+            plataforma["path_clean"],
+            plataforma["nombre"],
+            plataforma["output_path"]
+        )
+        resultados.append({
+            "plataforma": plataforma["nombre"],
+            "comentarios": clasificados
+        })
+
+    return JSONResponse(content=resultados)
