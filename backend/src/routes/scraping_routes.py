@@ -81,7 +81,6 @@ def scraping_youtube(data: ScrapingYouTubeRequest):
         raise HTTPException(status_code=e.status_code, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
-    
 
 @router.post("/todo")
 def scraping_todo(data: ScrapingTodoRequest):
@@ -192,6 +191,7 @@ def get_comentarios_x():
     return JSONResponse(content=comentarios)
 
 
+
 @router.get("/comentarios/tiktok")
 def get_comentarios_tiktok():
     # Leer ambos archivos JSON
@@ -233,7 +233,6 @@ def get_comentarios_youtube():
             })
 
     return JSONResponse(content=comentarios)
-
 
 # Clasificacion de comentariosfrom fastapi import APIRouter
 @router.get("/clasificar/todo")
