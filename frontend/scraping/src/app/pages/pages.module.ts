@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MonitoreoComponent } from './monitoreo/monitoreo.component';
 import { FormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
 
 
 
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    NgChartsModule,
     RouterModule,
     FormsModule,
   ],

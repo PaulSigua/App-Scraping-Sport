@@ -1,11 +1,18 @@
 <div class="space-y-6">
-  <!-- Título -->
+
+  <!-- Encabezado -->
   <div class="flex justify-between items-center bg-white rounded-lg p-4 shadow">
     <div>
       <h1 class="text-2xl font-bold text-gray-800">Panel de Control</h1>
       <p class="text-sm text-gray-500">Monitor de Conductas Tóxicas en Tiempo Real</p>
     </div>
-    <div class="text-sm text-green-600 font-medium">🟢 Sistema Activo</div>
+    <div class="flex items-center space-x-4">
+      <div class="text-sm text-green-600 font-medium">🟢 Sistema Activo</div>
+      <button (click)="actualizarDashboard()"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
+        Actualizar Datos
+      </button>
+    </div>
   </div>
 
   <!-- Tarjetas estadísticas -->
@@ -13,14 +20,11 @@
     <div class="bg-white rounded-lg p-4 shadow border border-blue-100">
       <p class="text-sm text-gray-500">Comentarios Hoy</p>
       <h2 class="text-xl font-bold text-blue-700">{{ totalComentarios }}</h2>
-      <p class="text-green-500 text-xs mt-1">+12.5% respecto ayer</p>
     </div>
     <div class="bg-white rounded-lg p-4 shadow border border-red-100">
       <p class="text-sm text-gray-500">Contenido Tóxico</p>
       <h2 class="text-xl font-bold text-red-600">{{ totalToxicos }}</h2>
-      <p class="text-red-500 text-xs mt-1">
-        {{ (totalToxicos / totalComentarios * 100) | number:'1.1-1' }}% del total
-      </p>
+      <p class="text-red-500 text-xs mt-1">{{ (totalToxicos / totalComentarios * 100) | number:'1.1-1' }}% del total</p>
     </div>
     <div class="bg-white rounded-lg p-4 shadow border border-yellow-100">
       <p class="text-sm text-gray-500">Alertas Críticas</p>
@@ -34,41 +38,89 @@
     </div>
   </div>
 
-  <!-- Gráfica (simulada) y plataformas -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-    <div class="bg-white rounded-lg shadow p-4 col-span-2 h-40 flex items-center justify-center border border-gray-100">
-      <p class="text-gray-400">[ Gráfico de actividad en tiempo real ]</p>
+  <!-- Nuevos Dashboards -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">Distribución por Clasificación</h3>
+      <div class="relative w-full max-w-[300px] h-[200px] mx-auto">
+        <canvas #graficoClasificacion class="w-full h-full"></canvas>
+      </div>
     </div>
+
+    <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">Distribución por Nivel de Toxicidad</h3>
+      <div class="relative w-full max-w-[400px] h-[200px] mx-auto">
+        <canvas #graficoNivelToxicidad class="w-full h-full"></canvas>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200 col-span-2">
+      <h3 class="text-lg font-bold text-gray-800 mb-4 tracking-wide">Palabras Clave más Comunes</h3>
+      <div class="flex flex-wrap gap-3">
+        <span *ngFor="let palabra of palabrasClaveMasComunes"
+          class="bg-blue-200 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold shadow-sm hover:scale-105 transition-transform">
+          {{ palabra }}
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Gráfico y plataformas activas -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
       <p class="text-sm text-gray-700 font-semibold mb-2">Plataformas Activas</p>
       <ul class="space-y-2 text-sm text-gray-600">
-        <li class="flex justify-between items-center">
+        <li class="flex justify-between items-center" *ngIf="conteoPorPlataforma['x']">
           <span class="flex items-center space-x-2">
             <span class="w-2 h-2 rounded-full bg-blue-500"></span>Twitter
           </span>
           <span>{{ conteoPorPlataforma['x'] }}</span>
         </li>
-        <li class="flex justify-between items-center">
+        <li class="flex justify-between items-center" *ngIf="conteoPorPlataforma['youtube']">
           <span class="flex items-center space-x-2">
             <span class="w-2 h-2 rounded-full bg-pink-400"></span>YouTube
           </span>
           <span>{{ conteoPorPlataforma['youtube'] }}</span>
         </li>
-        <li class="flex justify-between items-center">
+        <li class="flex justify-between items-center" *ngIf="conteoPorPlataforma['tiktok']">
           <span class="flex items-center space-x-2">
             <span class="w-2 h-2 rounded-full bg-blue-300"></span>TikTok
           </span>
           <span>{{ conteoPorPlataforma['tiktok'] }}</span>
         </li>
-        <li class="flex justify-between items-center text-gray-400">
+        <li class="flex justify-between items-center" *ngIf="conteoPorPlataforma['tiktok']">
           <span class="flex items-center space-x-2">
-            <span class="w-2 h-2 rounded-full bg-gray-300"></span>Facebook
+            <span class="w-2 h-2 rounded-full bg-green-300"></span>Facebook
           </span>
-          <span>Pausado</span>
+          <span>{{ conteoPorPlataforma['facebook'] }}</span>
         </li>
       </ul>
     </div>
   </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div *ngFor="let grafico of graficosPorPlataforma"
+       class="bg-white rounded-lg shadow p-4 border border-gray-100">
+    <h3 class="text-sm font-semibold text-gray-700 mb-2 capitalize">
+      {{ grafico.plataforma }}: Distribución por Clasificación
+    </h3>
+
+    <canvas baseChart
+      [data]="{
+        labels: grafico.labels,
+        datasets: [{
+          data: grafico.data,
+          backgroundColor: ['#38bdf8', '#f87171'],
+          label: 'Clasificación'
+        }]
+      }"
+      [type]="'bar'"
+      [options]="chartOptions">
+    </canvas>
+  </div>
+</div>
 
   <!-- Alertas recientes -->
   <div class="bg-white rounded-lg shadow p-4 border border-gray-100">
@@ -83,9 +135,68 @@
           “{{ alerta.comentario }}”
         </p>
         <p class="text-xs text-gray-500">
-          Por: {{ alerta.usuario }} - {{ alerta.plataforma | titlecase }} • Confianza: {{ alerta.confianza || 0 }}%
+          Por: {{ alerta.usuario || 'Anónimo' }} — {{ alerta.plataforma | titlecase }} • Confianza:
+          {{ (alerta.probabilidad_toxicidad * 100) | number:'1.0-0' }}%
         </p>
       </li>
     </ul>
   </div>
+
+  <!-- Lista completa de comentarios con filtros -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 mt-6">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-6">
+      <h3 class="text-lg font-bold text-gray-900">Todos los Comentarios</h3>
+      <div class="flex flex-wrap gap-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Nivel de Toxicidad:</label>
+          <select [(ngModel)]="filtroNivel" (change)="filtrarComentarios()"
+            class="border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 text-sm text-gray-800 shadow-sm">
+            <option value="">Todos</option>
+            <option value="bajo">Bajo</option>
+            <option value="medio">Medio</option>
+            <option value="alto">Alto</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Clasificación:</label>
+          <select [(ngModel)]="filtroClasificacion" (change)="filtrarComentarios()"
+            class="border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg px-4 py-2 text-sm text-gray-800 shadow-sm">
+            <option value="">Todas</option>
+            <option *ngFor="let clas of clasificacionesKeys" [value]="clas">{{ clas | titlecase }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <ul
+      class="divide-y divide-gray-200 max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      <li class="py-4 px-2 hover:bg-gray-50 transition-all rounded-lg" *ngFor="let comentario of comentariosFiltrados">
+        <div class="flex flex-col gap-1">
+          <p class="text-base text-gray-800 leading-relaxed">
+            <span class="font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg text-sm">
+              {{ comentario.clasificacion | titlecase }}
+            </span>
+            <span class="ml-2">“{{ comentario.comentario }}”</span>
+          </p>
+          <div class="text-xs text-gray-500 flex flex-wrap items-center gap-2">
+            <span class="inline-block">👤 {{ comentario.usuario || 'Anónimo' }}</span>
+            <span class="inline-block">🌐 {{ comentario.plataforma | titlecase }}</span>
+            <span class="inline-block">
+              ⚠️
+              <span [ngClass]="{
+                'text-green-600 font-semibold': comentario.nivel_toxicidad === 'bajo',
+                'text-yellow-600 font-semibold': comentario.nivel_toxicidad === 'medio',
+                'text-red-600 font-semibold': comentario.nivel_toxicidad === 'alto'
+              }">
+                {{ comentario.nivel_toxicidad | titlecase }}
+              </span>
+            </span>
+            <span class="inline-block">🤖 Confianza: {{ (comentario.probabilidad_toxicidad * 100) | number:'1.0-0'
+              }}%</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
 </div>

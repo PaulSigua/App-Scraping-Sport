@@ -1,7 +1,10 @@
 from fastapi import APIRouter, HTTPException
+
 from services.scraping.scraping_x import ScraperX
 from services.scraping.scraping_tiktok import ScraperTikTok
 from services.scraping.scraping_youtube import ScraperYouTube
+from services.scraping.scraping_facebook import ScraperFacebook
+
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from services.clasification.clasification_comments import clasificar_archivo
@@ -16,6 +19,10 @@ router = APIRouter(
     prefix="/scraping",
     tags=["scraping"]
 )
+
+class ScrapingFacebookRequest(BaseModel):
+    palabra_clave: str
+    max_posts: int
 
 class ScrapingXRequest(BaseModel):
     palabra_clave: str
@@ -35,6 +42,22 @@ class ScrapingTodoRequest(BaseModel):
     max_videos_tiktok: int
     max_videos_youtube: int
 
+
+@router.post("/facebook")
+def scraping_facebook(data: ScrapingFacebookRequest):
+    try:
+        scraper = ScraperFacebook(palabra_clave=data.palabra_clave, max_posts=data.max_posts)
+        scraper.extraer_comentarios()
+        resultado = scraper.guardar_json()
+        return {
+            "status": "ok",
+            "comentarios_totales": resultado["total_raw"],
+            "comentarios_limpios": resultado["total_limpio"],
+            "archivo_raw": resultado["archivo_raw"],
+            "archivo_limpio": resultado["archivo_limpio"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al procesar Facebook: {str(e)}")
 
 @router.post("/x")
 def scraping_x(data: ScrapingXRequest):
@@ -131,12 +154,29 @@ def scraping_todo(data: ScrapingTodoRequest):
         except Exception as e:
             return ("youtube", {"status": "error", "error": str(e)})
 
+    def ejecutar_facebook():
+        try:
+            scraper = ScraperFacebook(palabra_clave=data.palabra_clave, max_posts=data.max_posts_x)
+            scraper.extraer_comentarios()
+            res = scraper.guardar_json()
+            return ("facebook", {
+                "status": "ok",
+                "comentarios_totales": res["total_raw"],
+                "comentarios_limpios": res["total_limpio"],
+                "archivo_raw": res["archivo_raw"],
+                "archivo_limpio": res["archivo_limpio"]
+            })
+        except Exception as e:
+            return ("facebook", {"status": "error", "error": str(e)})
+
+
     # Ejecutamos los 3 scrapers en paralelo
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    with ThreadPoolExecutor(max_workers=4) as executor:
         tareas = [
             executor.submit(ejecutar_x),
             executor.submit(ejecutar_tiktok),
-            executor.submit(ejecutar_youtube)
+            executor.submit(ejecutar_youtube),
+            executor.submit(ejecutar_facebook)
         ]
 
         for future in tareas:
@@ -158,6 +198,29 @@ def leer_json(path: str):
             return json.load(f)
     except Exception:
         raise HTTPException(status_code=404, detail="Archivo no encontrado o inválido")
+    
+
+@router.get("/comentarios/facebook")
+def get_comentarios_facebook():
+    data = leer_json(f"{PATH_}/comentarios_facebook_raw.json")
+    clean_data = leer_json(f"{PATH_}/comentarios_facebook_clean.json")
+
+    clean_keys = set((c["usuario"], c["post_titulo"]) for c in clean_data)
+
+    comentarios = []
+    for publicacion in data:
+        titulo = publicacion.get("TituloPublicacion", "")
+        for comentario in publicacion.get("Comentarios", []):
+            clave = (comentario["Usuario"], titulo)
+            if clave in clean_keys:
+                comentarios.append({
+                    "usuario": comentario["Usuario"],
+                    "comentario": comentario["Comentario"],
+                    "plataforma": "facebook"
+                })
+
+    return JSONResponse(content=comentarios)
+
 
 
 @router.get("/comentarios/x")
@@ -254,6 +317,11 @@ def clasificar_todo():
             "nombre": "youtube",
             "path_clean": os.path.join(PATH_, "youtube_clean.json"),
             "output_path": os.path.join(PATH_, "youtube_class.json")
+        },
+        {
+            "nombre": "facebook",
+            "path_clean": os.path.join(PATH_, "comentarios_facebook_clean.json"),
+            "output_path": os.path.join(PATH_, "comentarios_facebook_class.json")
         }
     ]
 
@@ -269,3 +337,9 @@ def clasificar_todo():
         })
 
     return JSONResponse(content=resultados)
+
+
+@router.get("/comentarios/obtenerjson")
+def get_dataset():
+    data = leer_json(f"{PATH_}/dataset.json")
+    return JSONResponse(content=data)
