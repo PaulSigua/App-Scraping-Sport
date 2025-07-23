@@ -258,3 +258,20 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,windows,venv,python,angular
+
+.scraping-env/
+scraping-env
+
+# x
+tweets_clean.json
+tweets_raw.json
+
+# tiktok
+comentarios_tiktok_raw.json
+comentarios_tiktok_clean.json
+
+# Youtube
+youtube_clean.json
+youtube_raw.json
+
+error_login_x.png

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+selenium
+python-dotenv
+langdetect
+nltk
+webdriver_manager
+spacy
+openai

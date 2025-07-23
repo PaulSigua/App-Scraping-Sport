@@ -5,16 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutsModule } from './Layouts/layouts.module';
 import { PagesModule } from './pages/pages.module';
+import { HttpClientModule } from '@angular/common/http';
+import { NgChartsModule } from 'ng2-charts';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     LayoutsModule,
-    PagesModule
+    PagesModule,
+    NgChartsModule,
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [
     provideClientHydration(withEventReplay())
