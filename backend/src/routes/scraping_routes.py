@@ -200,146 +200,212 @@ def leer_json(path: str):
         raise HTTPException(status_code=404, detail="Archivo no encontrado o inválido")
     
 
+def cargar_clasificados_dataset(plataforma: str) -> dict:
+    dataset = leer_json(os.path.join(PATH_, "dataset.json"))
+    if plataforma == "facebook":
+        return {
+            c["usuario"]: c
+            for c in dataset
+            if c["plataforma"] == "facebook"
+        }
+    else:
+        return {
+            (c["usuario"], c["video_url"]): c
+            for c in dataset
+            if c["plataforma"] == plataforma
+        }
+
+
 @router.get("/comentarios/facebook")
 def get_comentarios_facebook():
-    data = leer_json(f"{PATH_}/comentarios_facebook_raw.json")
-    clean_data = leer_json(f"{PATH_}/comentarios_facebook_clean.json")
-
-    clean_keys = set((c["usuario"], c["post_titulo"]) for c in clean_data)
+    raw_data = leer_json(f"{PATH_}/comentarios_facebook_raw.json")
+    clasificados = cargar_clasificados_dataset("facebook")
 
     comentarios = []
-    for publicacion in data:
+    for publicacion in raw_data:
         titulo = publicacion.get("TituloPublicacion", "")
         for comentario in publicacion.get("Comentarios", []):
-            clave = (comentario["Usuario"], titulo)
-            if clave in clean_keys:
+            usuario = comentario["Usuario"]
+            clasif = clasificados.get(usuario)
+            if clasif:
                 comentarios.append({
-                    "usuario": comentario["Usuario"],
+                    "usuario": usuario,
                     "comentario": comentario["Comentario"],
-                    "plataforma": "facebook"
+                    "video_url": titulo,
+                    "plataforma": "facebook",
+                    "clasificacion": clasif.get("clasificacion", "otro")
                 })
 
     return JSONResponse(content=comentarios)
+
 
 
 
 @router.get("/comentarios/x")
 def get_comentarios_x():
-    data = leer_json(f"{PATH_}/tweets_raw.json")
-    clean_data = leer_json(f"{PATH_}/tweets_clean.json")
-    data_clasificados = leer_json(f"{PATH_}/tweets_class.json")
-
-    # Crear set de claves válidas desde clean: (usuario, tweet_id)
-    clean_keys = set((tweet["usuario"], tweet["tweet_id"]) for tweet in clean_data)
-
-    # Clasificados dict: (usuario, video_url) → "insulto", "otro", etc.
-    clasificados_dict = {
-        (c["usuario"], c["video_url"]): c["clasificacion"]
-        for c in data_clasificados
-    }
+    raw_data = leer_json(f"{PATH_}/tweets_raw.json")
+    clasificados = cargar_clasificados_dataset("x")
 
     comentarios = []
-    for tweet in data:
-        tweet_url = tweet["tweet_url"]
+    for tweet in raw_data:
+        tweet_url = tweet.get("tweet_url", "")
         for c in tweet.get("comments", []):
             clave = (c["usuario"], tweet_url)
-            if clave in clean_keys:
+            clasif = clasificados.get(clave)
+            if clasif:
                 comentarios.append({
                     "usuario": c["usuario"],
                     "comentario": c["texto"],
+                    "video_url": tweet_url,
                     "plataforma": "x",
-                    "clasificacion": clasificados_dict.get(clave, "sin clasificar")
+                    "clasificacion": clasif.get("clasificacion", "otro")
                 })
 
     return JSONResponse(content=comentarios)
 
 
 
+
+
 @router.get("/comentarios/tiktok")
 def get_comentarios_tiktok():
-    # Leer ambos archivos JSON
     raw_data = leer_json(f"{PATH_}/comentarios_tiktok_raw.json")
-    clean_data = leer_json(f"{PATH_}/comentarios_tiktok_clean.json")
-
-    clean_keys = set((comentario["usuario"], comentario["video_url"]) for comentario in clean_data)
-
-    comentarios_validados = []
-    for comentario in raw_data:
-        clave = (comentario["usuario"], comentario["video_url"])
-        if clave in clean_keys:
-            comentarios_validados.append({
-                "usuario": comentario["usuario"],
-                "comentario": comentario["comentario"],
-                "plataforma": "tiktok"
-            })
-
-    return JSONResponse(content=comentarios_validados)
-
-
-
-@router.get("/comentarios/youtube")
-def get_comentarios_youtube():
-    data = leer_json(f"{PATH_}/youtube_raw.json")
-    clean_data = leer_json(f"{PATH_}/youtube_clean.json")
-
-    # Crear set de claves válidas desde clean: (video_url, usuario)
-    clean_keys = set((c["video_url"], c["usuario"]) for c in clean_data)
+    clasificados = cargar_clasificados_dataset("tiktok")
 
     comentarios = []
-    for c in data:
-        clave = (c["video_url"], c["usuario"])  # ahora sí coinciden
-        if clave in clean_keys:
+    for comentario in raw_data:
+        clave = (comentario["usuario"], comentario["video_url"])
+        clasif = clasificados.get(clave)
+        if clasif:
             comentarios.append({
-                "usuario": c["usuario"],
-                "comentario": c["comentario"],  # Comentario original del raw
-                "plataforma": "youtube"
+                "usuario": comentario["usuario"],
+                "comentario": comentario["comentario"],
+                "video_url": comentario["video_url"],
+                "plataforma": "tiktok",
+                "clasificacion": clasif.get("clasificacion", "otro")
             })
 
     return JSONResponse(content=comentarios)
 
+
+@router.get("/comentarios/youtube")
+def get_comentarios_youtube():
+    raw_data = leer_json(f"{PATH_}/youtube_raw.json")
+    clasificados = cargar_clasificados_dataset("youtube")
+
+    comentarios = []
+    for c in raw_data:
+        clave = (c["usuario"], c["video_url"])
+        clasif = clasificados.get(clave)
+        if clasif:
+            comentarios.append({
+                "usuario": c["usuario"],
+                "comentario": c["comentario"],
+                "video_url": c["video_url"],
+                "plataforma": "youtube",
+                "clasificacion": clasif.get("clasificacion", "otro")
+            })
+
+    return JSONResponse(content=comentarios)
+
+
+
 # Clasificacion de comentariosfrom fastapi import APIRouter
 @router.get("/clasificar/todo")
 def clasificar_todo():
-    resultados = []
+    dataset = []
 
     plataformas = [
         {
             "nombre": "tiktok",
             "path_clean": os.path.join(PATH_, "comentarios_tiktok_clean.json"),
-            "output_path": os.path.join(PATH_, "comentarios_tiktok_class.json")
         },
         {
             "nombre": "x",
             "path_clean": os.path.join(PATH_, "tweets_clean.json"),
-            "output_path": os.path.join(PATH_, "tweets_class.json")
         },
         {
             "nombre": "youtube",
             "path_clean": os.path.join(PATH_, "youtube_clean.json"),
-            "output_path": os.path.join(PATH_, "youtube_class.json")
         },
         {
             "nombre": "facebook",
             "path_clean": os.path.join(PATH_, "comentarios_facebook_clean.json"),
-            "output_path": os.path.join(PATH_, "comentarios_facebook_class.json")
         }
     ]
 
     for plataforma in plataformas:
         clasificados = clasificar_archivo(
             plataforma["path_clean"],
-            plataforma["nombre"],
-            plataforma["output_path"]
+            plataforma["nombre"]
         )
-        resultados.append({
-            "plataforma": plataforma["nombre"],
-            "comentarios": clasificados
-        })
 
-    return JSONResponse(content=resultados)
+        dataset.extend(clasificados)
+
+    # Guardar todo el dataset unificado
+    dataset_path = os.path.join(PATH_, "dataset.json")
+    with open(dataset_path, "w", encoding="utf-8") as f:
+        json.dump(dataset, f, ensure_ascii=False, indent=2)
+
+    return JSONResponse(content={
+        "mensaje": "Clasificación completada correctamente.",
+        "comentarios_totales": len(dataset),
+        "archivo": "dataset.json"
+    })
+
 
 
 @router.get("/comentarios/obtenerjson")
 def get_dataset():
-    data = leer_json(f"{PATH_}/dataset.json")
-    return JSONResponse(content=data)
+    dataset = leer_json(os.path.join(PATH_, "dataset.json"))
+
+    # Cargar datos crudos por plataforma
+    raw_tiktok = leer_json(os.path.join(PATH_, "comentarios_tiktok_raw.json"))
+    raw_x = leer_json(os.path.join(PATH_, "tweets_raw.json"))
+    raw_youtube = leer_json(os.path.join(PATH_, "youtube_raw.json"))
+    raw_facebook = leer_json(os.path.join(PATH_, "comentarios_facebook_raw.json"))
+
+    # Diccionarios para acceso rápido
+    dic_tiktok = {(c["usuario"], c["video_url"]): c["comentario"] for c in raw_tiktok}
+    dic_youtube = {(c["usuario"], c["video_url"]): c["comentario"] for c in raw_youtube}
+    dic_x = {
+        (c["usuario"], tweet["tweet_url"]): c["texto"]
+        for tweet in raw_x
+        for c in tweet.get("comments", [])
+    }
+    dic_facebook = {
+        c["Usuario"]: c["Comentario"]
+        for publicacion in raw_facebook
+        for c in publicacion.get("Comentarios", [])
+    }
+
+    resultado = []
+    for comentario in dataset:
+        plataforma = comentario["plataforma"]
+        usuario = comentario["usuario"]
+        video_url = comentario.get("video_url", "")
+
+        if plataforma == "facebook":
+            texto_crudo = dic_facebook.get(usuario)
+        elif plataforma == "tiktok":
+            texto_crudo = dic_tiktok.get((usuario, video_url))
+        elif plataforma == "youtube":
+            texto_crudo = dic_youtube.get((usuario, video_url))
+        elif plataforma == "x":
+            texto_crudo = dic_x.get((usuario, video_url))
+        else:
+            texto_crudo = None
+
+        if texto_crudo:
+            resultado.append({
+                "usuario": usuario,
+                "comentario": texto_crudo,
+                "video_url": video_url,
+                "plataforma": plataforma,
+                "clasificacion": comentario.get("clasificacion", "otro"),
+                "probabilidad_toxicidad": comentario.get("probabilidad_toxicidad", 0.0),
+                "nivel_toxicidad": comentario.get("nivel_toxicidad", "bajo"),
+                "palabras_clave": comentario.get("palabras_clave", [])
+            })
+
+    return JSONResponse(content=resultado)

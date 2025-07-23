@@ -1,114 +1,388 @@
 [
   {
-    "usuario": "",
-    "comentario": "jugador co él palmer moís caicedo muralla chelseir dar golpe duro psg fantastico",
-    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
-    "plataforma": "facebook",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:30:00Z",
-    "longitud": 81,
-    "probabilidad_toxicidad": 0.15,
-    "nivel_toxicidad": "medio",
-    "palabras_clave": ["caicedo", "muralla", "chelseir", "psg", "fantastico"],
-    "cantidad_emojis": 0,
-    "moderado": false
-  },
-  {
-    "usuario": "@tinudis2950",
-    "comentario": "gracias dazn dejar yo ver torneo",
-    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
-    "plataforma": "facebook",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:33:00Z",
-    "longitud": 35,
-    "probabilidad_toxicidad": 0.08,
-    "nivel_toxicidad": "bajo",
-    "palabras_clave": ["gracias", "dazn", "ver", "torneo"],
-    "cantidad_emojis": 0,
-    "moderado": false
-  },
-  {
-    "usuario": "luis.chanlatte",
-    "comentario": "triste caso suceder vida real",
-    "video_url": "https://www.tiktok.com/@novelas.diarias8/video/7424001120453889313",
+    "usuario": "Saul_11👾",
+    "comentario": "robo gol cristiano ronaldo adelantado pensar discutir",
+    "video_url": "https://www.tiktok.com/@r7.ccg/video/7512435551795006738",
     "plataforma": "tiktok",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:15:00Z",
-    "longitud": 31,
-    "probabilidad_toxicidad": 0.12,
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.1,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["triste", "caso", "vida", "real"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": [
+      "robo",
+      "adelantado"
+    ]
   },
   {
-    "usuario": "Titinaips20",
-    "comentario": "mirar voz alta mama aco escuchar",
-    "video_url": "https://www.tiktok.com/@novelas.diarias8/video/7424001120453889313",
+    "usuario": "Kendo Kaponi 💯",
+    "comentario": "costar hacer messi jajajaj",
+    "video_url": "https://www.tiktok.com/@r7.ccg/video/7512435551795006738",
     "plataforma": "tiktok",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:17:00Z",
-    "longitud": 38,
-    "probabilidad_toxicidad": 0.10,
-    "nivel_toxicidad": "bajo",
-    "palabras_clave": ["mirar", "voz", "alta", "escuchar"],
-    "cantidad_emojis": 0,
-    "moderado": false
-  },
-  {
-    "usuario": "LicArias2",
-    "comentario": "hazle saber sr correa quedo campeon mundo ser banca derecho franz banco izquierdo vender humo",
-    "video_url": "https://x.com/jeduardogalvan/status/1943388864141316571",
-    "plataforma": "x",
-    "clasificacion": "insulto",
-    "fecha": "2025-07-22T09:25:00Z",
-    "longitud": 100,
-    "probabilidad_toxicidad": 0.91,
-    "nivel_toxicidad": "alto",
-    "palabras_clave": ["correa", "campeon", "banca", "vender", "humo"],
-    "cantidad_emojis": 0,
-    "moderado": false
-  },
-  {
-    "usuario": "_Thiago_14_",
-    "comentario": "auckland meta gol",
-    "video_url": "https://x.com/Estors_J/status/1937606306078064732",
-    "plataforma": "x",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:28:00Z",
-    "longitud": 20,
+    "clasificacion": "neutral",
     "probabilidad_toxicidad": 0.05,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["auckland", "gol"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": []
+  },
+  {
+    "usuario": "user5478511443159",
+    "comentario": "defensa central excelente faltar delantero mas",
+    "video_url": "https://www.tiktok.com/@edits.ecuagood/video/7514702257300999480",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "alexis_gxi",
+    "comentario": "gonzalo valle nilson angulo revelacion  dos fecha",
+    "video_url": "https://www.tiktok.com/@edits.ecuagood/video/7514702257300999480",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Futt.emelec",
+    "comentario": "edit recordar q ise q iso viral bloquear cuenta",
+    "video_url": "https://www.tiktok.com/@edits.ecuagood/video/7514702257300999480",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Dan",
+    "comentario": "nilson angulo atrevimiento solo tecnico sepa aprovechar potencial miedo encarar falta alguien potencie",
+    "video_url": "https://www.tiktok.com/@edits.ecuagood/video/7514702257300999480",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "JOEL VIVES",
+    "comentario": "nilson solo faltar confianza si mismo plus ahueir nadie",
+    "video_url": "https://www.tiktok.com/@edits.ecuagood/video/7514702257300999480",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "bet593",
+    "comentario": "positivo recordar amarillo ultimo visita quito recibir liga intencion tomar carta asunto dar golpe autoridad casa pronostico ganar bet ecuatoriano",
+    "video_url": "https://x.com/mahagess/status/1944548166537564231",
+    "plataforma": "x",
+    "clasificacion": "spam",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "bet",
+      "pronostico",
+      "amarillo",
+      "liga",
+      "ecuatoriano"
+    ]
+  },
+  {
+    "usuario": "CBrunetto1922",
+    "comentario": "venir primero psg",
+    "video_url": "https://x.com/Misticauruguaya/status/1933701465794883889",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "hinodosmlks",
+    "comentario": "menos tim portual",
+    "video_url": "https://x.com/PedroVieira_25/status/1944507036479193116",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.1,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "CVitalidad",
+    "comentario": "descubrir version mas saludable ajuste quiropractico aumentar energia vitalidad formula totalmente natural haz clic ahora explorar oferta exclusivo comenzar camino hacia mejor salud",
+    "video_url": "https://x.com/PedroVieira_25/status/1944507036479193116",
+    "plataforma": "x",
+    "clasificacion": "spam",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "haz clic",
+      "oferta",
+      "exclusivo"
+    ]
+  },
+  {
+    "usuario": "Pedro_H_Sousa_",
+    "comentario": "so mudario lugar resto otimo",
+    "video_url": "https://x.com/PedroVieira_25/status/1944507036479193116",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.02,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "bet593",
+    "comentario": "positivo recordar amarillo ultimo visita quito recibir liga intencion tomar carta asunto dar golpe autoridad casa pronostico ganar bet ecuatoriano",
+    "video_url": "https://x.com/PedroVieira_25/status/1944507036479193116",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "RonaldFabin4",
+    "comentario": "mentira si q jugar vez",
+    "video_url": "https://x.com/SanMarinoTeam/status/1947396876090937549",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.1,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "mentira"
+    ]
+  },
+  {
+    "usuario": "SanMarinoTeam",
+    "comentario": "tenia dos pantalla loco",
+    "video_url": "https://x.com/SanMarinoTeam/status/1947396876090937549",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "loco"
+    ]
+  },
+  {
+    "usuario": "FlbpBvB",
+    "comentario": "nunca tirar cv",
+    "video_url": "https://x.com/SanMarinoTeam/status/1947396876090937549",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "difago",
+    "comentario": "tambien vi tanto partido dia querer saber futbol sufri sobredosis",
+    "video_url": "https://x.com/SanMarinoTeam/status/1947396876090937549",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
   },
   {
     "usuario": "",
     "comentario": "jugador co él palmer moís caicedo muralla chelseir dar golpe duro psg fantastico",
     "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
     "plataforma": "youtube",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:30:00Z",
-    "longitud": 81,
-    "probabilidad_toxicidad": 0.15,
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["caicedo", "muralla", "chelseir", "psg", "fantastico"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": []
+  },
+  {
+    "usuario": "@juanestebancifuentespardo9236",
+    "comentario": "chelsear favorito final jugar nunca increible",
+    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
+    "plataforma": "youtube",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
   },
   {
     "usuario": "@tinudis2950",
     "comentario": "gracias dazn dejar yo ver torneo",
     "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
     "plataforma": "youtube",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:33:00Z",
-    "longitud": 35,
-    "probabilidad_toxicidad": 0.08,
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.01,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["gracias", "dazn", "ver", "torneo"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": [
+      "gracias",
+      "dazn",
+      "ver",
+      "torneo"
+    ]
+  },
+  {
+    "usuario": "@RafaelMaldonadoValdez-f4i",
+    "comentario": "dar mismo chocolate psg estrategico defensa parado psg nunca saber hacer él dano digno campeon manejo partido bien",
+    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
+    "plataforma": "youtube",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "@andreshernandez7906",
+    "comentario": "increible todo final chelsea partio victimo salio campeon dos champions ahora mundial clubes",
+    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
+    "plataforma": "youtube",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "increible",
+      "chelsea",
+      "campeon",
+      "champions",
+      "mundial"
+    ]
+  },
+  {
+    "usuario": "Atm distrik",
+    "comentario": "gracias rafael correa delgado haber hacer gestion ac milan poder llegar pervi estupinar",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Carlos Ulloa",
+    "comentario": "pasar mas dalir campeon",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "pasar",
+      "dalir",
+      "campeon"
+    ]
+  },
+  {
+    "usuario": "Jose Edison Maldonado",
+    "comentario": "bien bien venir mejor equipo mundo milanista corazon ahora mucho mas razon forza milan",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Martin Cgn",
+    "comentario": "liga quito san siro",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "liga",
+      "quito",
+      "san",
+      "siro"
+    ]
+  },
+  {
+    "usuario": "Gustavo Andrés Illescas",
+    "comentario": "porqueria arbitraje siempre",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "insulto",
+    "probabilidad_toxicidad": 0.82,
+    "nivel_toxicidad": "medio",
+    "palabras_clave": [
+      "porqueria",
+      "arbitraje"
+    ]
+  },
+  {
+    "usuario": "Marcelo Villa",
+    "comentario": "q asco equipo q poder ganar equipo mediocre todavia costa x alabar él q iir ser campeón punto primordial perdido dos equipo monton delfin libertad ahora tocar barceloca seguro q perder r bajada ultimos lugar deber",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "insulto",
+    "probabilidad_toxicidad": 0.87,
+    "nivel_toxicidad": "medio",
+    "palabras_clave": [
+      "asco",
+      "equipo mediocre",
+      "monton",
+      "barceloca"
+    ]
+  },
+  {
+    "usuario": "Alan Deleg",
+    "comentario": "ser realista veneccia cuenco perder juego ahora venir liga idv ojala empecer salir hexagonal",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "veneccia",
+      "cuenco",
+      "perder",
+      "juego",
+      "liga",
+      "hexagonal"
+    ]
+  },
+  {
+    "usuario": "José Durán",
+    "comentario": "aclarar primero tiempo pesimo pelotazo romper trampa obsay mejor jugar arquero delante",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.1,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "pesimo",
+      "pelotazo",
+      "trampa"
+    ]
+  },
+  {
+    "usuario": "Efrain Montaleza",
+    "comentario": "leguizamon macario deber ser titular",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Marco Cusco",
+    "comentario": "deber jugar comienzo k pasar",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Marco Novillo",
+    "comentario": "saco barata dir gracias delfin definidor",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.01,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
   }
 ]
