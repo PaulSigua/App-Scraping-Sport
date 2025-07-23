@@ -81,3 +81,34 @@ def clasificar_archivo(path_clean: str, plataforma: str):
 
     return resultado
 
+def es_tema_no_deportivo(texto: str) -> bool:
+    """
+    Devuelve True si NO es un tema deportivo, False si sí lo es.
+    """
+
+    prompt = f"""
+Responde únicamente con "sí" o "no". ¿El siguiente texto NO trata sobre un tema deportivo como fútbol, baloncesto, tenis, etc.?
+
+Texto: "{texto}"
+"""
+
+    try:
+        response = client.chat.completions.create(
+            model="o4-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Eres un asistente que detecta si un texto no está relacionado con deportes. Responde estrictamente con 'sí' o 'no'."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+
+        contenido = response.choices[0].message.content.strip().lower()
+        return contenido.startswith("sí") or contenido.startswith("si")
+    except Exception as e:
+        print(f"[ERROR] al validar si no es tema deportivo: {e}")
+        return False  # Por seguridad, se asume que sí es deportivo si falla

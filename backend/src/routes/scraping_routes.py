@@ -7,7 +7,7 @@ from services.scraping.scraping_facebook import ScraperFacebook
 
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from services.clasification.clasification_comments import clasificar_archivo
+from services.clasification.clasification_comments import clasificar_archivo, es_tema_no_deportivo
 import json
 import os
 from concurrent.futures import ThreadPoolExecutor
@@ -46,6 +46,7 @@ class ScrapingTodoRequest(BaseModel):
 @router.post("/facebook")
 def scraping_facebook(data: ScrapingFacebookRequest):
     try:
+
         scraper = ScraperFacebook(palabra_clave=data.palabra_clave, max_posts=data.max_posts)
         scraper.extraer_comentarios()
         resultado = scraper.guardar_json()
@@ -61,6 +62,7 @@ def scraping_facebook(data: ScrapingFacebookRequest):
 
 @router.post("/x")
 def scraping_x(data: ScrapingXRequest):
+
     scraper = ScraperX(palabra_clave=data.palabra_clave, max_posts=data.max_posts)
     scraper.open_twitter_login()
     scraper.buscar_tweets()
@@ -76,19 +78,23 @@ def scraping_x(data: ScrapingXRequest):
 
 @router.post("/tiktok")
 def scraping_tiktok(data: ScrapingTikTokRequest):
-    scraper = ScraperTikTok(palabra_clave=data.palabra_clave, max_videos=data.max_videos)
-    scraper.buscar_videos()
-    scraper.extraer_comentarios()
-    json_path = scraper.guardar_json()
-    return {
-        "status": "ok",
-        "total_comentarios": len(scraper.comentarios_data),
-        "archivo_json": json_path
-    }
+    try:
+        scraper = ScraperTikTok(palabra_clave=data.palabra_clave, max_videos=data.max_videos)
+        scraper.buscar_videos()
+        scraper.extraer_comentarios()
+        json_path = scraper.guardar_json()
+        return {
+            "status": "ok",
+            "total_comentarios": len(scraper.comentarios_data),
+            "archivo_json": json_path
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al procesar Facebook: {str(e)}")
 
 @router.post("/youtube")
 def scraping_youtube(data: ScrapingYouTubeRequest):
     try:
+
         scraper = ScraperYouTube(palabra_clave=data.palabra_clave, max_videos=data.max_videos)
         scraper.buscar_videos()
         resultado = scraper.guardar_json()
@@ -111,6 +117,7 @@ def scraping_todo(data: ScrapingTodoRequest):
 
     def ejecutar_x():
         try:
+
             scraper = ScraperX(palabra_clave=data.palabra_clave, max_posts=data.max_posts_x)
             scraper.open_twitter_login()
             scraper.buscar_tweets()
@@ -127,6 +134,7 @@ def scraping_todo(data: ScrapingTodoRequest):
 
     def ejecutar_tiktok():
         try:
+
             scraper = ScraperTikTok(palabra_clave=data.palabra_clave, max_videos=data.max_videos_tiktok)
             scraper.buscar_videos()
             scraper.extraer_comentarios()
@@ -141,6 +149,7 @@ def scraping_todo(data: ScrapingTodoRequest):
 
     def ejecutar_youtube():
         try:
+
             scraper = ScraperYouTube(palabra_clave=data.palabra_clave, max_videos=data.max_videos_youtube)
             scraper.buscar_videos()
             res = scraper.guardar_json()
@@ -156,6 +165,7 @@ def scraping_todo(data: ScrapingTodoRequest):
 
     def ejecutar_facebook():
         try:
+
             scraper = ScraperFacebook(palabra_clave=data.palabra_clave, max_posts=data.max_posts_x)
             scraper.extraer_comentarios()
             res = scraper.guardar_json()
@@ -184,13 +194,6 @@ def scraping_todo(data: ScrapingTodoRequest):
             resultados[plataforma] = resultado
 
     return JSONResponse(content=resultados)
-
-# Falta Facebook
-
-##
-
-## 
-
 
 def leer_json(path: str):
     try:
@@ -313,6 +316,7 @@ def get_comentarios_youtube():
 # Clasificacion de comentariosfrom fastapi import APIRouter
 @router.get("/clasificar/todo")
 def clasificar_todo():
+    print("Iniciando clasificación de todos los comentarios...")
     dataset = []
 
     plataformas = [
@@ -409,3 +413,18 @@ def get_dataset():
             })
 
     return JSONResponse(content=resultado)
+
+class ValidacionRequest(BaseModel):
+    texto: str
+
+@router.post("/validar-no-deporte")
+def validar_no_deporte(data: ValidacionRequest):
+    """
+    Retorna True si el texto NO es deportivo, False si sí es deportivo.
+    Esto es útil para evitar scraping si no es tema relacionado.
+    """
+    try:
+        no_deportivo = es_tema_no_deportivo(data.texto)
+        return {"noDeportivo": no_deportivo}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al validar: {str(e)}")
