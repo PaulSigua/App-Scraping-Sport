@@ -135,8 +135,7 @@
           “{{ alerta.comentario }}”
         </p>
         <p class="text-xs text-gray-500">
-          Por: {{ alerta.usuario || 'Anónimo' }} — {{ alerta.plataforma | titlecase }} • Confianza:
-          {{ (alerta.probabilidad_toxicidad * 100) | number:'1.0-0' }}%
+          Por: {{ alerta.usuario || 'Anónimo' }} — {{ alerta.plataforma | titlecase }} 
         </p>
       </li>
     </ul>
@@ -191,8 +190,6 @@
                 {{ comentario.nivel_toxicidad | titlecase }}
               </span>
             </span>
-            <span class="inline-block">🤖 Confianza: {{ (comentario.probabilidad_toxicidad * 100) | number:'1.0-0'
-              }}%</span>
           </div>
         </div>
       </li>

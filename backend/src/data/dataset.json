@@ -1,114 +1,316 @@
 [
   {
-    "usuario": "",
-    "comentario": "jugador co él palmer moís caicedo muralla chelseir dar golpe duro psg fantastico",
-    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
-    "plataforma": "facebook",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:30:00Z",
-    "longitud": 81,
-    "probabilidad_toxicidad": 0.15,
-    "nivel_toxicidad": "medio",
-    "palabras_clave": ["caicedo", "muralla", "chelseir", "psg", "fantastico"],
-    "cantidad_emojis": 0,
-    "moderado": false
-  },
-  {
-    "usuario": "@tinudis2950",
-    "comentario": "gracias dazn dejar yo ver torneo",
-    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
-    "plataforma": "facebook",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:33:00Z",
-    "longitud": 35,
-    "probabilidad_toxicidad": 0.08,
-    "nivel_toxicidad": "bajo",
-    "palabras_clave": ["gracias", "dazn", "ver", "torneo"],
-    "cantidad_emojis": 0,
-    "moderado": false
-  },
-  {
-    "usuario": "luis.chanlatte",
-    "comentario": "triste caso suceder vida real",
-    "video_url": "https://www.tiktok.com/@novelas.diarias8/video/7424001120453889313",
+    "usuario": "Matías 4",
+    "comentario": "decir cada anio asi estario nivel top claro despy mundial selección",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
     "plataforma": "tiktok",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:15:00Z",
-    "longitud": 31,
-    "probabilidad_toxicidad": 0.12,
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.02,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["triste", "caso", "vida", "real"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": []
   },
   {
-    "usuario": "Titinaips20",
-    "comentario": "mirar voz alta mama aco escuchar",
-    "video_url": "https://www.tiktok.com/@novelas.diarias8/video/7424001120453889313",
+    "usuario": "Angel D.",
+    "comentario": "cada ano mejor mejor",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
     "plataforma": "tiktok",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:17:00Z",
-    "longitud": 38,
-    "probabilidad_toxicidad": 0.10,
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["mirar", "voz", "alta", "escuchar"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": []
   },
   {
-    "usuario": "LicArias2",
-    "comentario": "hazle saber sr correa quedo campeon mundo ser banca derecho franz banco izquierdo vender humo",
-    "video_url": "https://x.com/jeduardogalvan/status/1943388864141316571",
-    "plataforma": "x",
+    "usuario": "SEDFEXT3488 4.0",
+    "comentario": "gran invento lastima fifa querer arruinar",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "sarcasmo",
+    "probabilidad_toxicidad": 0.2,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "lastima",
+      "arruinar",
+      "fifa"
+    ]
+  },
+  {
+    "usuario": "SociedadSecreta",
+    "comentario": "querer mundial club cada ano",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Jos 🪶",
+    "comentario": "decir perderio estatus asi creer champions jugar cada ano",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
     "clasificacion": "insulto",
-    "fecha": "2025-07-22T09:25:00Z",
-    "longitud": 100,
-    "probabilidad_toxicidad": 0.91,
-    "nivel_toxicidad": "alto",
-    "palabras_clave": ["correa", "campeon", "banca", "vender", "humo"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "probabilidad_toxicidad": 0.65,
+    "nivel_toxicidad": "medio",
+    "palabras_clave": [
+      "perderio estatus"
+    ]
   },
   {
-    "usuario": "_Thiago_14_",
-    "comentario": "auckland meta gol",
-    "video_url": "https://x.com/Estors_J/status/1937606306078064732",
-    "plataforma": "x",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:28:00Z",
-    "longitud": 20,
+    "usuario": "Tatiana 🌷",
+    "comentario": "seriar mejor cada ano equipo ganar pase mundial hacer equipo competitivo si pasar ano luego desarmar ir hacer burla mundial",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
     "probabilidad_toxicidad": 0.05,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["auckland", "gol"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": [
+      "burla",
+      "desarmar"
+    ]
   },
   {
-    "usuario": "",
-    "comentario": "jugador co él palmer moís caicedo muralla chelseir dar golpe duro psg fantastico",
-    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
-    "plataforma": "youtube",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:30:00Z",
-    "longitud": 81,
-    "probabilidad_toxicidad": 0.15,
+    "usuario": "edwardjosue579",
+    "comentario": "ir hacer cada ano",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["caicedo", "muralla", "chelseir", "psg", "fantastico"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": []
   },
   {
-    "usuario": "@tinudis2950",
-    "comentario": "gracias dazn dejar yo ver torneo",
-    "video_url": "https://www.youtube.com/watch?v=5NPLHqF_tIo&pp=ygUGZnVyYm9s",
-    "plataforma": "youtube",
-    "clasificacion": "otro",
-    "fecha": "2025-07-22T09:33:00Z",
-    "longitud": 35,
-    "probabilidad_toxicidad": 0.08,
+    "usuario": "Maximiliano Galvan",
+    "comentario": "cada dos ano parecer horrible ser cada selección",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
     "nivel_toxicidad": "bajo",
-    "palabras_clave": ["gracias", "dazn", "ver", "torneo"],
-    "cantidad_emojis": 0,
-    "moderado": false
+    "palabras_clave": [
+      "horrible"
+    ]
+  },
+  {
+    "usuario": "Ángel.v",
+    "comentario": "literal querer dejar jugador vacación cada verano tendriar jugar mundial despues mundial club luego eurocopa copa americo luego mundial clubes",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "GS",
+    "comentario": "cada ano bien air nuevo club solo poco participen denuevo",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Phil foden",
+    "comentario": "mejor cada dos mes mundial buenisimo",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.01,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Steven S",
+    "comentario": "cada mes ideal",
+    "video_url": "https://www.tiktok.com/@lajugada15/video/7526984207327857925",
+    "plataforma": "tiktok",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.01,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "ElasMuozGimnez1",
+    "comentario": "parecer fichaje andy",
+    "video_url": "https://x.com/Andy_Calcio/status/1947395146037006699",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "FratelloCalcio",
+    "comentario": "favor venir pulir él premier mal rapido fuerte mayor vocacion defensivo ver tanto profundidad creer aportar mas atra atacar rossonero ver",
+    "video_url": "https://x.com/Andy_Calcio/status/1947395146037006699",
+    "plataforma": "x",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.01,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "@ivangaonaaaa",
+    "comentario": "futbol futbol marketing ocultismo",
+    "video_url": "https://www.youtube.com/watch?v=QOigQmI9oxc&pp=ygUMbXVuZGlhbCBmaWZh0gcJCccJAYcqIYzv",
+    "plataforma": "youtube",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "futbol",
+      "marketing",
+      "ocultismo"
+    ]
+  },
+  {
+    "usuario": "@pedrocontreras2807",
+    "comentario": "ver trofeo pensar tambien tenio culto saturno",
+    "video_url": "https://www.youtube.com/watch?v=QOigQmI9oxc&pp=ygUMbXVuZGlhbCBmaWZh0gcJCccJAYcqIYzv",
+    "plataforma": "youtube",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "ver",
+      "trofeo",
+      "pensar",
+      "tenio",
+      "culto",
+      "saturno"
+    ]
+  },
+  {
+    "usuario": "Atm distrik",
+    "comentario": "gracias rafael correa delgado haber hacer gestion ac milan poder llegar pervi estupinar",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "spam",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "rafael correa delgado",
+      "ac milan",
+      "pervi",
+      "estupinar"
+    ]
+  },
+  {
+    "usuario": "Carlos Ulloa",
+    "comentario": "pasar mas dalir campeon",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Jose Edison Maldonado",
+    "comentario": "bien bien venir mejor equipo mundo milanista corazon ahora mucho mas razon forza milan",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Martin Cgn",
+    "comentario": "liga quito san siro",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Gustavo Andrés Illescas",
+    "comentario": "porqueria arbitraje siempre",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "insulto",
+    "probabilidad_toxicidad": 0.65,
+    "nivel_toxicidad": "medio",
+    "palabras_clave": [
+      "porqueria"
+    ]
+  },
+  {
+    "usuario": "Marcelo Villa",
+    "comentario": "q asco equipo q poder ganar equipo mediocre todavia costa x alabar él q iir ser campeón punto primordial perdido dos equipo monton delfin libertad ahora tocar barceloca seguro q perder r bajada ultimos lugar deber",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "insulto",
+    "probabilidad_toxicidad": 0.87,
+    "nivel_toxicidad": "alto",
+    "palabras_clave": [
+      "asco",
+      "mediocre",
+      "monton",
+      "barceloca"
+    ]
+  },
+  {
+    "usuario": "Alan Deleg",
+    "comentario": "ser realista veneccia cuenco perder juego ahora venir liga idv ojala empecer salir hexagonal",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "veneccia",
+      "cuenco",
+      "perder",
+      "juego",
+      "liga",
+      "hexagonal"
+    ]
+  },
+  {
+    "usuario": "José Durán",
+    "comentario": "aclarar primero tiempo pesimo pelotazo romper trampa obsay mejor jugar arquero delante",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": [
+      "pesimo",
+      "trampa"
+    ]
+  },
+  {
+    "usuario": "Efrain Montaleza",
+    "comentario": "leguizamon macario deber ser titular",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Marco Cusco",
+    "comentario": "deber jugar comienzo k pasar",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.05,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
+  },
+  {
+    "usuario": "Marco Novillo",
+    "comentario": "saco barata dir gracias delfin definidor",
+    "video_url": "",
+    "plataforma": "facebook",
+    "clasificacion": "neutral",
+    "probabilidad_toxicidad": 0.0,
+    "nivel_toxicidad": "bajo",
+    "palabras_clave": []
   }
 ]

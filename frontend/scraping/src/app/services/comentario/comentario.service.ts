@@ -21,7 +21,7 @@ export interface Comentario {
 
 @Injectable({ providedIn: 'root' })
 export class ComentarioService {
-  private endpoint = `${environment.API_URL}/comentarios/obtenerjson`;
+  private endpoint = `${environment.API_URL}/scraping/comentarios/obtenerjson`;
 
   constructor(private http: HttpClient) {}
 

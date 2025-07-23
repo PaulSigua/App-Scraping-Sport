@@ -30,6 +30,9 @@ export class MonitoreoComponent implements OnInit {
   filtroPlataforma = 'todas';
 
   cargando = false;
+  mensajeExito = '';
+  errorBusqueda = '';
+
 
   constructor(private scrapingSer: ScrapingService) {}
 
@@ -39,7 +42,7 @@ export class MonitoreoComponent implements OnInit {
 
   cargarComentariosPrevios() {
     this.cargando = true;
-    const plataformas = ['x', 'youtube', 'tiktok'];
+    const plataformas = ['x', 'youtube', 'tiktok', 'facebook'];
     let pendientes = plataformas.length;
 
     plataformas.forEach((plataforma) => {
@@ -66,36 +69,110 @@ export class MonitoreoComponent implements OnInit {
     });
   }
 
-  ejecutarScraping() {
-    if (!this.plataformaSeleccionada) return;
-    this.cargando = true;
+ejecutarScraping() {
+  this.errorBusqueda = '';
+  this.mensajeExito = '';
 
-    this.scrapingSer
-      .ejecutarScraping(this.plataformaSeleccionada, this.palabraClave, this.maxResultados)
-      .subscribe({
-        next: () => {
-          this.scrapingSer
-            .obtenerComentariosDesdeApi(this.plataformaSeleccionada)
-            .subscribe((comentarios) => {
-              const formateados = comentarios.map((c: any) => ({
-                ...c,
-                plataforma: this.plataformaSeleccionada,
-                confianza: Math.floor(Math.random() * 20) + 80,
-                riesgo: Math.floor(Math.random() * 100),
-                etiquetas: ['Fútbol'],
-                fecha: new Date().toLocaleString(),
-              }));
-              this.comentarios.push(...formateados);
-              this.actualizarComentariosFiltrados();
-              this.cargando = false;
-            });
-        },
-        error: (e) => {
-          console.error('Error en scraping', e);
-          this.cargando = false;
-        },
-      });
+  if (!this.plataformaSeleccionada) {
+    this.errorBusqueda = '⚠️ Selecciona una plataforma.';
+    return;
   }
+
+  if (!this.palabraClave.trim()) {
+    this.errorBusqueda = '⚠️ Ingresa una palabra clave.';
+    return;
+  }
+
+  this.cargando = true;
+
+  // ❗ Usamos la validación: true → NO deportivo, false → deportivo
+  this.scrapingSer.validarTemaNoDeportivo(this.palabraClave).subscribe({
+    next: (res) => {
+      if (res.noDeportivo) {
+        this.errorBusqueda = '❌ El término ingresado NO está relacionado con deportes. No se ejecutará el scraping.';
+        this.cargando = false;
+        return;
+      }
+
+      // ✅ Si es deportivo, ejecutamos scraping
+      this.scrapingSer
+        .ejecutarScraping(this.plataformaSeleccionada, this.palabraClave, this.maxResultados)
+        .subscribe({
+          next: () => {
+            this.scrapingSer
+              .obtenerComentariosDesdeApi(this.plataformaSeleccionada)
+              .subscribe((comentarios) => {
+                const formateados = comentarios.map((c: any) => ({
+                  ...c,
+                  plataforma: this.plataformaSeleccionada,
+                  confianza: Math.floor(Math.random() * 20) + 80,
+                  riesgo: Math.floor(Math.random() * 100),
+                  etiquetas: ['Fútbol'],
+                  fecha: new Date().toLocaleString(),
+                }));
+                this.comentarios.push(...formateados);
+                this.actualizarComentariosFiltrados();
+                this.mensajeExito = '✅ Scraping ejecutado correctamente.';
+                this.cargando = false;
+              });
+          },
+          error: (e) => {
+            this.errorBusqueda = `Error en scraping: ${e.error?.detail || 'desconocido'}`;
+            this.cargando = false;
+          },
+        });
+    },
+    error: () => {
+      this.errorBusqueda = '❌ Error al validar el tema con OpenAI.';
+      this.cargando = false;
+    }
+  });
+}
+
+ejecutarScrapingTodo() {
+  this.errorBusqueda = '';
+  this.mensajeExito = '';
+
+  if (!this.palabraClave.trim()) {
+    this.errorBusqueda = '⚠️ Ingresa una palabra clave.';
+    return;
+  }
+
+  this.cargando = true;
+
+  // Primero validamos si NO es deportivo
+  this.scrapingSer.validarTemaNoDeportivo(this.palabraClave).subscribe({
+    next: (res) => {
+      if (res.noDeportivo) {
+        this.errorBusqueda = '❌ El término ingresado NO está relacionado con deportes. No se ejecutará el scraping.';
+        this.cargando = false;
+        return;
+      }
+
+      // ✅ Si es deportivo → Ejecutar scraping múltiple
+      this.scrapingSer
+        .ejecutarScrapingTodo(this.palabraClave, this.maxResultados, this.maxResultados, this.maxResultados, this.maxResultados)
+        .subscribe({
+          next: (res) => {
+            // Cargar todos los comentarios nuevamente
+            this.cargarComentariosPrevios();
+            this.mensajeExito = '✅ Scraping múltiple ejecutado correctamente.';
+          },
+          error: (err) => {
+            this.errorBusqueda = `❌ Error en scraping múltiple: ${err.error?.detail || 'desconocido'}`;
+          },
+          complete: () => {
+            this.cargando = false;
+          }
+        });
+    },
+    error: () => {
+      this.errorBusqueda = '❌ Error al validar el tema con OpenAI.';
+      this.cargando = false;
+    }
+  });
+}
+
 
   actualizarComentariosFiltrados() {
     this.comentariosFiltrados = this.filtroPlataforma === 'todas'
@@ -113,4 +190,23 @@ export class MonitoreoComponent implements OnInit {
     const select = event.target as HTMLSelectElement;
     this.plataformaSeleccionada = select.value;
   }
+
+  // monitoreo.component.ts (dentro de la clase)
+clasificarTodo() {
+  this.errorBusqueda = '';
+  this.mensajeExito = '';
+  this.cargando = true;
+
+  this.scrapingSer.clasificarTodosComentarios().subscribe({
+    next: (res) => {
+      this.mensajeExito = `✅ ${res.mensaje} Total: ${res.comentarios_totales} comentarios.`;
+      this.cargando = false;
+    },
+    error: (err) => {
+      this.errorBusqueda = '❌ Error al clasificar comentarios.';
+      this.cargando = false;
+    }
+  });
+}
+
 }
